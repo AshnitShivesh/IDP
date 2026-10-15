@@ -3,573 +3,548 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>5G Network Security Monitor</title>
 <style>
-:root {
-  --bg:#f7f7f7;--panel:#fff;--text:#171717;--muted:#777;
-  --border:#e4e4e4;--soft:#f0f0f0;--black:#111;
-}
+:root{--bg:#f7f7f7;--panel:#fff;--text:#171717;--muted:#777;--border:#e4e4e4}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 button,input,select{font:inherit}
 button{cursor:pointer}
-button:focus-visible,select:focus-visible{outline:2px solid #777;outline-offset:2px}
-header{background:#fff;border-bottom:1px solid var(--border);padding:20px 5%}
-.top{max-width:1450px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.brand{font-size:18px;font-weight:750;letter-spacing:-.5px}
-.brand span{font-weight:400;color:var(--muted)}
-.status{display:flex;align-items:center;gap:8px;color:#555;font-size:12px}
-.dot{height:8px;width:8px;background:#888;border-radius:50%;display:inline-block}
+header{background:white;border-bottom:1px solid var(--border);padding:19px 5%}
+.top,main{max-width:1400px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.brand{font-size:18px;font-weight:750}.brand span{font-weight:400;color:var(--muted)}
+.status{font-size:12px;color:#666;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:#999}
 .dot.live{background:#111;box-shadow:0 0 0 3px #ddd}
-main{max-width:1450px;margin:0 auto;padding:25px 5% 50px}
-.notice{padding:10px 13px;background:#eee;border:1px solid #ddd;color:#555;font-size:12px;margin-bottom:22px}
+main{padding:25px 5% 45px}
+.notice{background:#eee;border:1px solid #ddd;padding:10px 13px;font-size:12px;color:#555;margin-bottom:22px}
 h1{font-size:26px;letter-spacing:-1px;margin:0 0 5px}
 .subtitle{color:var(--muted);margin:0 0 22px}
-.tabs{display:flex;gap:5px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:22px}
-.tab{border:0;background:transparent;padding:11px 14px;color:var(--muted);border-bottom:2px solid transparent}
-.tab.active{color:#111;border-bottom-color:#111;font-weight:650}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:22px}
+.tab{border:0;background:transparent;padding:11px 13px;color:var(--muted);border-bottom:2px solid transparent}
+.tab.active{border-bottom-color:#111;color:#111;font-weight:650}
 .page{display:none}.page.active{display:block}
-.grid{display:grid;gap:15px}
-.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px}
+.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px}
 .two{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:16px}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:9px;padding:18px;min-width:0}
+.card{background:white;border:1px solid var(--border);border-radius:9px;padding:18px;min-width:0}
 .kicker{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.metric{font-size:30px;font-weight:700;letter-spacing:-1px;margin:8px 0 3px}
+.metric{font-size:29px;font-weight:700;letter-spacing:-1px;margin:8px 0 3px}
 .hint{font-size:12px;color:var(--muted)}
-.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 13px}
-h2{font-size:15px;margin:0;font-weight:700}
-.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{border:1px solid #ccc;background:white;color:#222;border-radius:6px;padding:8px 12px;font-size:12px}
-.btn:hover{background:#eee}
-.btn.primary{background:#111;color:#fff;border-color:#111}
-.btn.primary:hover{background:#333}
-select{background:white;border:1px solid #ccc;border-radius:6px;padding:8px 10px;color:#222}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px}
+h2{font-size:15px;margin:0;font-weight:700}h3{font-size:14px;margin:0 0 10px}
+.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn{background:#fff;border:1px solid #ccc;border-radius:6px;padding:8px 12px;font-size:12px;color:#222}
+.btn:hover{background:#eee}.btn.primary{background:#111;color:white;border-color:#111}
+select,input[type=text],input[type=number]{border:1px solid #ccc;background:white;border-radius:6px;padding:8px 10px;color:#222;max-width:100%}
+label.small{font-size:12px;color:#555}
 table{border-collapse:collapse;width:100%;font-size:12px}
 th{text-align:left;color:var(--muted);font-weight:550;background:#fafafa}
 th,td{padding:11px 10px;border-bottom:1px solid #eee;white-space:nowrap}
 tr:last-child td{border-bottom:0}
 .table-wrap{overflow-x:auto}
 .pill{display:inline-block;border:1px solid #ddd;border-radius:4px;padding:3px 7px;font-size:10px;color:#444;background:#fafafa}
-.pill.high{background:#222;color:#fff;border-color:#222}
-.pill.medium{background:#e5e5e5;color:#222}
-.pill.low{background:#fafafa;color:#777}
-.muted{color:var(--muted)}
-.empty{text-align:center;color:var(--muted);padding:28px}
-.chart-wrap{height:240px;position:relative;width:100%}
-canvas{width:100%;height:100%;display:block}
-.legend{display:flex;gap:16px;font-size:11px;color:#666;margin-top:12px;flex-wrap:wrap}
+.pill.high{background:#222;color:white;border-color:#222}.pill.medium{background:#e5e5e5}.pill.low{color:#777}
+.empty{text-align:center;color:var(--muted);padding:25px}
+.chart-wrap{height:230px;width:100%}canvas{display:block;width:100%;height:100%}
+.legend{display:flex;gap:16px;font-size:11px;color:#666;margin-top:12px}
 .legend span:before{content:"";display:inline-block;width:9px;height:9px;background:#222;margin-right:6px;border-radius:2px}
 .legend .susp:before{background:#aaa}
 .progress{height:6px;background:#eee;border-radius:10px;overflow:hidden;margin-top:9px}
-.progress div{height:100%;background:#333;transition:width .2s}
+.progress div{height:100%;transition:width .2s}
+.severity-item{margin:22px 0}.severity-top{display:flex;justify-content:space-between;font-size:13px}
 .rule{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 0;border-bottom:1px solid #eee}
-.rule:last-child{border-bottom:0}
-.rule-title{font-weight:600;font-size:13px}
+.rule:last-child{border-bottom:0}.rule-title{font-size:13px;font-weight:600}
 .rule-desc{font-size:12px;color:var(--muted);margin-top:3px}
 .switch{appearance:none;width:36px;height:20px;border-radius:20px;background:#ccc;position:relative;cursor:pointer;flex-shrink:0}
-.switch:checked{background:#111}
-.switch:before{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:white;top:3px;left:3px;transition:transform .15s}
+.switch:checked{background:#111}.switch:before{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:white;top:3px;left:3px;transition:transform .15s}
 .switch:checked:before{transform:translateX(16px)}
-label.small{font-size:12px;color:#555}
-.severity-item{margin:22px 0}
-.severity-top{display:flex;justify-content:space-between;align-items:center;font-size:13px}
-.severity-top strong{font-size:14px}
-.footer{text-align:center;color:#999;font-size:11px;padding:25px 0 0}
+.rule-link{border:0;background:transparent;color:#111;text-decoration:underline;text-underline-offset:3px;padding:3px;font-weight:650}
+.rule-link:hover{color:#666}
+.detail-panel{border:1px solid #ddd;border-radius:7px;background:#fafafa;padding:18px;margin:14px 0}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:15px 0}
+.detail-box{background:white;border:1px solid #eee;border-radius:6px;padding:12px}
+.detail-box strong{display:block;font-size:12px;margin-bottom:4px}
+.detail-box span{font-size:12px;color:#555}
+.form-row{display:grid;grid-template-columns:130px minmax(0,1fr);align-items:center;gap:12px;margin:13px 0}
+.form-row label{font-size:12px;color:#555}
+.footer{text-align:center;color:#999;font-size:11px;padding-top:25px}
 #toast{position:fixed;bottom:20px;right:20px;background:#111;color:white;padding:11px 15px;border-radius:7px;font-size:12px;display:none;z-index:10}
-@media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}}
-@media(max-width:520px){main{padding:18px 4% 35px}header{padding:16px 4%}.metric{font-size:25px}.tab{padding:10px 9px;font-size:12px}.card{padding:14px}.stats{gap:9px}}
+@media(max-width:850px){.stats,.two{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){main{padding:18px 4% 35px}header{padding:16px 4%}.stats,.two{grid-template-columns:1fr}.metric{font-size:25px}.tab{padding:10px 8px;font-size:12px}.card{padding:14px}.form-row{grid-template-columns:1fr;gap:5px}.detail-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
   <div class="top">
     <div class="brand">5G <span>/ Network Security Monitor</span></div>
-    <div class="status"><span class="dot" id="liveDot"></span><span id="liveText">SIMULATION PAUSED</span></div>
+    <div class="status"><span id="liveDot" class="dot"></span><span id="liveText">SIMULATION PAUSED</span></div>
   </div>
 </header>
 
 <main>
-  <div class="notice">DEMO MODE — All traffic, devices, threats and responses are simulated locally. No real network is monitored or blocked.</div>
-  <h1>Security Dashboard</h1>
-  <p class="subtitle">Real-time traffic monitoring and rule-based threat response.</p>
+<div class="notice">DEMO MODE — Traffic, threats and responses are simulated locally. No real network is monitored or blocked.</div>
+<h1>Security Dashboard</h1>
+<p class="subtitle">Network traffic monitoring, threat detection and configurable response policies.</p>
 
-  <nav class="tabs" aria-label="Dashboard sections">
-    <button class="tab active" data-page="dashboard">Dashboard</button>
-    <button class="tab" data-page="traffic">Network Traffic</button>
-    <button class="tab" data-page="threats">Threats</button>
-    <button class="tab" data-page="response">Security Response</button>
-    <button class="tab" data-page="logs">Event Logs</button>
-  </nav>
+<nav class="tabs">
+  <button class="tab active" data-page="dashboard">Dashboard</button>
+  <button class="tab" data-page="traffic">Network Traffic</button>
+  <button class="tab" data-page="threats">Threats</button>
+  <button class="tab" data-page="response">Security Response</button>
+  <button class="tab" data-page="logs">Event Logs</button>
+</nav>
 
-  <section class="page active" id="dashboard">
-    <div class="section-head">
-      <h2>Network overview</h2>
-      <div class="controls">
-        <label class="small" for="speed">Traffic speed</label>
-        <select id="speed">
-          <option value="4000">Slow</option>
-          <option value="2500" selected>Normal</option>
-          <option value="1200">Fast</option>
-          <option value="500">Very fast</option>
-        </select>
-        <button class="btn primary" id="toggle">Start simulation</button>
-        <button class="btn" id="reset">Reset</button>
-      </div>
+<section class="page active" id="dashboard">
+  <div class="section-head">
+    <h2>Network overview</h2>
+    <div class="controls">
+      <label class="small" for="speed">Traffic speed</label>
+      <select id="speed"><option value="4000">Slow</option><option value="2500" selected>Normal</option><option value="1200">Fast</option><option value="500">Very fast</option></select>
+      <button class="btn primary" id="toggle">Start simulation</button>
+      <button class="btn" id="reset">Reset</button>
     </div>
+  </div>
+  <div class="grid stats">
+    <div class="card"><div class="kicker">Packets observed</div><div class="metric" id="packets">0</div><div class="hint">Since reset</div></div>
+    <div class="card"><div class="kicker">Threats detected</div><div class="metric" id="threatCount">0</div><div class="hint">Rule-based detections</div></div>
+    <div class="card"><div class="kicker">Packets / second</div><div class="metric" id="pps">0</div><div class="hint">Approximate simulation rate</div></div>
+    <div class="card"><div class="kicker">Responses triggered</div><div class="metric" id="responseCount">0</div><div class="hint">Simulated actions</div></div>
+  </div>
 
-    <div class="grid stats">
-      <div class="card"><div class="kicker">Packets observed</div><div class="metric" id="packets">0</div><div class="hint">Since last reset</div></div>
-      <div class="card"><div class="kicker">Threats detected</div><div class="metric" id="threatCount">0</div><div class="hint">Rule-based detections</div></div>
-      <div class="card"><div class="kicker">Packets / second</div><div class="metric" id="pps">0</div><div class="hint">Estimated simulation rate</div></div>
-      <div class="card"><div class="kicker">Responses triggered</div><div class="metric" id="responseCount">0</div><div class="hint">Simulated security actions</div></div>
-    </div>
-
-    <div class="grid two">
-      <div class="card">
-        <div class="section-head"><h2>Traffic history</h2><span class="pill">Last 20 intervals</span></div>
-        <div class="chart-wrap"><canvas id="trafficChart" aria-label="Normal and suspicious traffic history"></canvas></div>
-        <div class="legend"><span>Normal traffic</span><span class="susp">Suspicious traffic</span></div>
-      </div>
-
-      <div class="card">
-        <div class="section-head"><h2>Threat severity distribution</h2><span class="pill">Live analysis</span></div>
-        <div class="severity-item">
-          <div class="severity-top"><span>High severity</span><strong id="distHigh">0</strong></div>
-          <div class="progress"><div id="barHigh" style="width:0%;background:#111"></div></div>
-        </div>
-        <div class="severity-item">
-          <div class="severity-top"><span>Medium severity</span><strong id="distMedium">0</strong></div>
-          <div class="progress"><div id="barMedium" style="width:0%;background:#666"></div></div>
-        </div>
-        <div class="severity-item">
-          <div class="severity-top"><span>Low severity</span><strong id="distLow">0</strong></div>
-          <div class="progress"><div id="barLow" style="width:0%;background:#aaa"></div></div>
-        </div>
-        <div style="border-top:1px solid #eee;padding-top:15px">
-          <div class="kicker">Total detected threats</div>
-          <div class="metric" id="distTotal">0</div>
-          <div class="hint">Distribution updates as the simulation runs.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid two">
-      <div class="card">
-        <div class="section-head"><h2>Latest detections</h2><button class="btn" data-goto="threats">View all</button></div>
-        <div class="table-wrap"><table><thead><tr><th>Source IP</th><th>Threat</th><th>Severity</th></tr></thead><tbody id="latestThreats"></tbody></table></div>
-      </div>
-      <div class="card">
-        <div class="section-head"><h2>System status</h2><span class="pill">Local engine</span></div>
-        <div class="rule"><div><div class="rule-title">Traffic generator</div><div class="rule-desc">Synthetic packet stream</div></div><span id="generatorStatus" class="pill">Stopped</span></div>
-        <div class="rule"><div><div class="rule-title">Threat detection</div><div class="rule-desc">Predefined heuristic rules</div></div><span class="pill">Ready</span></div>
-        <div class="rule"><div><div class="rule-title">Automated responses</div><div class="rule-desc">Local simulation only</div></div><span id="autoStatus" class="pill">Enabled</span></div>
-        <div class="rule"><div><div class="rule-title">Monitoring mode</div><div class="rule-desc">Browser-based demo</div></div><span class="pill">Offline</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="page" id="traffic">
-    <div class="section-head"><h2>Network traffic stream</h2><div class="controls">
-      <label class="small" for="trafficFilter">Filter</label>
-      <select id="trafficFilter"><option value="all">All packets</option><option value="normal">Normal only</option><option value="suspicious">Suspicious only</option></select>
-    </div></div>
-    <div class="grid stats">
-      <div class="card"><div class="kicker">Total packets</div><div class="metric" id="trafficTotal">0</div></div>
-      <div class="card"><div class="kicker">Normal packets</div><div class="metric" id="normalTotal">0</div></div>
-      <div class="card"><div class="kicker">Suspicious packets</div><div class="metric" id="suspiciousTotal">0</div></div>
-      <div class="card"><div class="kicker">Unique source IPs</div><div class="metric" id="uniqueIPs">0</div></div>
+  <div class="grid two">
+    <div class="card">
+      <div class="section-head"><h2>Traffic history</h2><span class="pill">Last 20 intervals</span></div>
+      <div class="chart-wrap"><canvas id="trafficChart" aria-label="Traffic history chart"></canvas></div>
+      <div class="legend"><span>Normal traffic</span><span class="susp">Suspicious traffic</span></div>
     </div>
     <div class="card">
-      <div class="section-head"><h2>Packet records</h2><span class="hint">Newest first · limited to 100 rows</span></div>
-      <div class="table-wrap"><table><thead><tr><th>Time</th><th>Source IP</th><th>Destination IP</th><th>Protocol</th><th>Port</th><th>Status</th></tr></thead><tbody id="trafficRows"></tbody></table></div>
+      <div class="section-head"><h2>Threat severity distribution</h2><span class="pill">Live analysis</span></div>
+      <div class="severity-item"><div class="severity-top"><span>High severity</span><strong id="distHigh">0</strong></div><div class="progress"><div id="barHigh" style="background:#111"></div></div></div>
+      <div class="severity-item"><div class="severity-top"><span>Medium severity</span><strong id="distMedium">0</strong></div><div class="progress"><div id="barMedium" style="background:#666"></div></div></div>
+      <div class="severity-item"><div class="severity-top"><span>Low severity</span><strong id="distLow">0</strong></div><div class="progress"><div id="barLow" style="background:#aaa"></div></div></div>
+      <div style="border-top:1px solid #eee;padding-top:15px"><div class="kicker">Total detected threats</div><div class="metric" id="distTotal">0</div><div class="hint">Updates during simulation</div></div>
     </div>
-  </section>
+  </div>
 
-  <section class="page" id="threats">
-    <div class="section-head"><h2>Threat intelligence</h2><div class="controls">
-      <label class="small" for="severityFilter">Severity</label>
-      <select id="severityFilter"><option value="all">All severities</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
-      <button class="btn" id="exportThreats">Export threats CSV</button>
-    </div></div>
-    <div class="grid stats">
-      <div class="card"><div class="kicker">High severity</div><div class="metric" id="highCount">0</div></div>
-      <div class="card"><div class="kicker">Medium severity</div><div class="metric" id="mediumCount">0</div></div>
-      <div class="card"><div class="kicker">Low severity</div><div class="metric" id="lowCount">0</div></div>
-      <div class="card"><div class="kicker">Detection rules</div><div class="metric">4</div><div class="hint">Demo heuristics</div></div>
+  <div class="grid two">
+    <div class="card">
+      <div class="section-head"><h2>Latest detections</h2><button class="btn" data-goto="threats">View all</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Source IP</th><th>Threat</th><th>Severity</th></tr></thead><tbody id="latestThreats"></tbody></table></div>
     </div>
     <div class="card">
-      <div class="section-head"><h2>Detected threats</h2><span class="hint">Confidence is a simulated rule score, not an ML probability</span></div>
-      <div class="table-wrap"><table><thead><tr><th>Time</th><th>Source IP</th><th>Threat type</th><th>Severity</th><th>Confidence</th><th>Rule</th></tr></thead><tbody id="threatRows"></tbody></table></div>
+      <h2>System status</h2>
+      <div class="rule"><div><div class="rule-title">Traffic generator</div><div class="rule-desc">Synthetic packet stream</div></div><span id="generatorStatus" class="pill">Stopped</span></div>
+      <div class="rule"><div><div class="rule-title">Detection engine</div><div class="rule-desc">Predefined rules</div></div><span class="pill">Ready</span></div>
+      <div class="rule"><div><div class="rule-title">Automated responses</div><div class="rule-desc">Local simulation only</div></div><span id="autoStatus" class="pill">Enabled</span></div>
+      <div class="rule"><div><div class="rule-title">Monitoring mode</div><div class="rule-desc">Browser-based demo</div></div><span class="pill">Offline</span></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="page" id="response">
-    <div class="section-head"><h2>Automated response settings</h2><span class="pill">Simulation only</span></div>
-    <div class="grid two">
-      <div class="card">
-        <h2>Response engine</h2>
-        <p class="hint">Matching detections create simulated security actions. Disable individual rules to test different configurations.</p>
-        <div class="rule"><div><div class="rule-title">Enable automated responses</div><div class="rule-desc">Apply actions when a rule matches</div></div><input class="switch" type="checkbox" id="autoToggle" checked aria-label="Enable automated responses"></div>
-        <div class="rule"><div><div class="rule-title">High severity threats</div><div class="rule-desc">Simulate blocking the source IP</div></div><input class="switch" type="checkbox" id="ruleBlock" checked aria-label="Enable simulated block"></div>
-        <div class="rule"><div><div class="rule-title">Medium severity threats</div><div class="rule-desc">Flag the source for manual review</div></div><input class="switch" type="checkbox" id="ruleFlag" checked aria-label="Enable flag for review"></div>
-        <div class="rule"><div><div class="rule-title">Low severity threats</div><div class="rule-desc">Simulate traffic rate limiting</div></div><input class="switch" type="checkbox" id="ruleLimit" checked aria-label="Enable simulated rate limit"></div>
-        <p class="hint">Settings change demo event records only. No firewall or network configuration is modified.</p>
+<section class="page" id="traffic">
+  <div class="section-head"><h2>Network traffic stream</h2>
+    <div class="controls"><label class="small" for="trafficFilter">Filter</label><select id="trafficFilter"><option value="all">All packets</option><option value="normal">Normal only</option><option value="suspicious">Suspicious only</option></select></div>
+  </div>
+  <div class="grid stats">
+    <div class="card"><div class="kicker">Total packets</div><div class="metric" id="trafficTotal">0</div></div>
+    <div class="card"><div class="kicker">Normal packets</div><div class="metric" id="normalTotal">0</div></div>
+    <div class="card"><div class="kicker">Suspicious packets</div><div class="metric" id="suspiciousTotal">0</div></div>
+    <div class="card"><div class="kicker">Unique source IPs</div><div class="metric" id="uniqueIPs">0</div></div>
+  </div>
+  <div class="card"><div class="section-head"><h2>Packet records</h2><span class="hint">Newest first · maximum 100 rows</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Time</th><th>Source IP</th><th>Destination IP</th><th>Protocol</th><th>Port</th><th>Status</th></tr></thead><tbody id="trafficRows"></tbody></table></div>
+  </div>
+</section>
+
+<section class="page" id="threats">
+  <div class="section-head"><h2>Threat intelligence</h2><div class="controls">
+    <label class="small" for="severityFilter">Severity</label>
+    <select id="severityFilter"><option value="all">All severities</option><option>High</option><option>Medium</option><option>Low</option></select>
+    <button class="btn" id="exportThreats">Export threats CSV</button>
+  </div></div>
+  <div class="grid stats">
+    <div class="card"><div class="kicker">High severity</div><div class="metric" id="highCount">0</div></div>
+    <div class="card"><div class="kicker">Medium severity</div><div class="metric" id="mediumCount">0</div></div>
+    <div class="card"><div class="kicker">Low severity</div><div class="metric" id="lowCount">0</div></div>
+    <div class="card"><div class="kicker">Detection rules</div><div class="metric">4</div><div class="hint">Click a rule ID to inspect it</div></div>
+  </div>
+  <div class="card">
+    <div class="section-head"><h2>Detected threats</h2><span class="hint">Confidence is a demonstration score, not an ML probability</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Time</th><th>Source IP</th><th>Threat type</th><th>Severity</th><th>Confidence</th><th>Detection rule</th></tr></thead><tbody id="threatRows"></tbody></table></div>
+    <div id="ruleDetails" class="detail-panel" hidden></div>
+  </div>
+  <div class="card" style="margin-top:15px">
+    <div class="section-head"><h2>Detection rule library</h2><span class="hint">Select any rule to view its logic</span></div>
+    <div id="ruleLibrary"></div>
+  </div>
+</section>
+
+<section class="page" id="response">
+  <div class="section-head"><h2>Response policy configuration</h2><span class="pill">Editable</span></div>
+  <div class="grid two">
+    <div class="card">
+      <h2>Response engine</h2>
+      <p class="hint">Choose what action is recorded when a newly detected threat has a given severity.</p>
+      <div class="rule"><div><div class="rule-title">Automated responses</div><div class="rule-desc">Apply configured actions to new detections</div></div><input class="switch" type="checkbox" id="autoToggle" checked aria-label="Enable automated responses"></div>
+
+      <div class="form-row"><label for="policyHigh">High severity</label><select id="policyHigh"><option value="block">Simulated block</option><option value="flag">Flag for review</option><option value="limit">Simulated rate limit</option><option value="alert">Generate alert only</option><option value="log">Log only</option><option value="none">No action</option></select></div>
+      <div class="form-row"><label for="policyMedium">Medium severity</label><select id="policyMedium"><option value="block">Simulated block</option><option value="flag" selected>Flag for review</option><option value="limit">Simulated rate limit</option><option value="alert">Generate alert only</option><option value="log">Log only</option><option value="none">No action</option></select></div>
+      <div class="form-row"><label for="policyLow">Low severity</label><select id="policyLow"><option value="block">Simulated block</option><option value="flag">Flag for review</option><option value="limit" selected>Simulated rate limit</option><option value="alert">Generate alert only</option><option value="log">Log only</option><option value="none">No action</option></select></div>
+      <div class="controls" style="margin-top:15px">
+        <button class="btn primary" id="savePolicy">Save response policy</button>
+        <button class="btn" id="resetPolicy">Restore defaults</button>
       </div>
-      <div class="card">
-        <h2>Response policy</h2>
-        <p class="hint">Default mapping used by the demonstration.</p>
-        <div class="rule"><div><div class="rule-title">High</div><div class="rule-desc">Simulated block</div></div><span class="pill high">Block</span></div>
-        <div class="rule"><div><div class="rule-title">Medium</div><div class="rule-desc">Flag for analyst review</div></div><span class="pill medium">Review</span></div>
-        <div class="rule"><div><div class="rule-title">Low</div><div class="rule-desc">Simulated rate limit</div></div><span class="pill low">Rate limit</span></div>
-        <button class="btn" id="clearResponses" style="margin-top:14px">Clear response history</button>
-      </div>
+      <p class="hint">Policy changes apply to future detections. Existing response records are not rewritten.</p>
     </div>
     <div class="card">
-      <div class="section-head"><h2>Response history</h2><button class="btn" id="exportResponses">Export responses CSV</button></div>
-      <div class="table-wrap"><table><thead><tr><th>Time</th><th>Source IP</th><th>Threat</th><th>Action</th><th>Status</th></tr></thead><tbody id="responseRows"></tbody></table></div>
+      <h2>Current policy summary</h2>
+      <p class="hint">Your selected actions are shown below.</p>
+      <div id="policySummary"></div>
+      <div class="notice" style="margin-top:15px;margin-bottom:0">All actions are simulated in this browser. This does not change firewall rules or block real traffic.</div>
     </div>
-  </section>
+  </div>
+  <div class="card">
+    <div class="section-head"><h2>Response history</h2><button class="btn" id="exportResponses">Export responses CSV</button></div>
+    <div class="table-wrap"><table><thead><tr><th>Time</th><th>Source IP</th><th>Threat</th><th>Action</th><th>Status</th></tr></thead><tbody id="responseRows"></tbody></table></div>
+  </div>
+</section>
 
-  <section class="page" id="logs">
-    <div class="section-head"><h2>Event logs</h2><div class="controls">
-      <button class="btn" id="exportAll">Download security report CSV</button>
-      <button class="btn" id="clearLogs">Clear visible logs</button>
-    </div></div>
-    <div class="card">
-      <div class="hint" style="margin-bottom:12px">The report combines packet, threat and response records into one CSV file.</div>
-      <div class="table-wrap"><table><thead><tr><th>Time</th><th>Event</th><th>Source</th><th>Details</th><th>Severity</th></tr></thead><tbody id="logRows"></tbody></table></div>
-    </div>
-  </section>
+<section class="page" id="logs">
+  <div class="section-head"><h2>Event logs</h2><div class="controls">
+    <button class="btn" id="exportAll">Download security report CSV</button>
+    <button class="btn" id="clearLogs">Clear event logs</button>
+  </div></div>
+  <div class="card"><p class="hint">Informational events have no severity label. Threat and response events retain their severity.</p>
+    <div class="table-wrap"><table><thead><tr><th>Time</th><th>Event</th><th>Source</th><th>Details</th><th>Severity</th></tr></thead><tbody id="logRows"></tbody></table></div>
+  </div>
+</section>
 
-  <div class="footer">5G Network Security Monitor · Educational prototype · All data generated locally</div>
+<div class="footer">5G Network Security Monitor · Educational prototype · Simulated data</div>
 </main>
 <div id="toast" role="status"></div>
 
 <script>
 (() => {
-  "use strict";
-  const $ = id => document.getElementById(id);
+"use strict";
+const $ = id => document.getElementById(id);
 
-  const sourcePool = [
-    "10.0.1.12","10.0.1.25","10.0.2.18","10.0.2.33",
-    "10.0.3.41","192.168.1.20","172.16.0.14"
-  ];
-  const destPool = [
-    "10.0.4.10","10.0.4.21","10.0.5.30",
-    "192.168.10.1","172.16.2.8"
-  ];
-  const protocols = ["TCP","TCP","UDP","UDP","ICMP"];
-  const threatTypes = [
-    {name:"Port Scan",severity:"Medium",confidence:87,rule:"R-01"},
-    {name:"Traffic Flood",severity:"High",confidence:96,rule:"R-02"},
-    {name:"Unusual Traffic Pattern",severity:"Low",confidence:72,rule:"R-03"},
-    {name:"Repeated Connection Attempts",severity:"Medium",confidence:83,rule:"R-04"}
-  ];
-
-  let packets=[],threats=[],responses=[],logs=[];
-  let running=false,interval=null,total=0,normal=0,suspicious=0;
-  let lastPps=0,toastTimer=null;
-  let history=Array.from({length:20},()=>({normal:0,suspicious:0}));
-
-  const rand=n=>Math.floor(Math.random()*n);
-  const pick=arr=>arr[rand(arr.length)];
-  const timeNow=()=>new Date().toLocaleTimeString();
-
-  function escapeHTML(value){
-    return String(value).replace(/[&<>"']/g,c=>({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[c]));
+const sources=["10.0.1.12","10.0.1.25","10.0.2.18","10.0.2.33","10.0.3.41","192.168.1.20","172.16.0.14"];
+const destinations=["10.0.4.10","10.0.4.21","10.0.5.30","192.168.10.1","172.16.2.8"];
+const protocols=["TCP","TCP","UDP","UDP","ICMP"];
+const rules={
+  "R-01":{
+    name:"Port Scan",severity:"Medium",confidence:87,
+    description:"A source appears to probe multiple service ports in a short period.",
+    condition:"Demo heuristic: a synthetic suspicious packet is assigned the Port Scan pattern.",
+    response:"Uses the currently configured Medium-severity response policy.",
+    recommendation:"Inspect the source, destination ports, and connection frequency before taking action."
+  },
+  "R-02":{
+    name:"Traffic Flood",severity:"High",confidence:96,
+    description:"A source is represented as generating an unusually large amount of traffic.",
+    condition:"Demo heuristic: a synthetic suspicious packet is assigned the Traffic Flood pattern.",
+    response:"Uses the currently configured High-severity response policy.",
+    recommendation:"Investigate traffic volume, packet rate, and whether service availability is affected."
+  },
+  "R-03":{
+    name:"Unusual Traffic Pattern",severity:"Low",confidence:72,
+    description:"Traffic is marked as deviating from the demonstration's normal traffic pattern.",
+    condition:"Demo heuristic: a synthetic suspicious packet is assigned the unusual-pattern category.",
+    response:"Uses the currently configured Low-severity response policy.",
+    recommendation:"Review the event alongside recent traffic history before escalating."
+  },
+  "R-04":{
+    name:"Repeated Connection Attempts",severity:"Medium",confidence:83,
+    description:"A source is represented as repeatedly attempting to connect to a destination.",
+    condition:"Demo heuristic: a synthetic suspicious packet is assigned the repeated-attempt category.",
+    response:"Uses the currently configured Medium-severity response policy.",
+    recommendation:"Review connection frequency and destination services to determine whether the behavior is expected."
   }
-  function pill(value){
-    const cls=["High","Medium","Low"].includes(value)?value.toLowerCase():
-      value==="Suspicious"?"medium":value==="Normal"?"low":"";
-    return `<span class="pill ${cls}">${escapeHTML(value)}</span>`;
-  }
-  function toast(message){
-    $("toast").textContent=message;
-    $("toast").style.display="block";
-    clearTimeout(toastTimer);
-    toastTimer=setTimeout(()=>$("toast").style.display="none",2400);
-  }
-  function addLog(event,source,details,severity="Info"){
-    logs.unshift({time:timeNow(),event,source,details,severity});
-    logs=logs.slice(0,500);
-  }
+};
+const actionNames={
+  block:"Simulated block",flag:"Flag for review",limit:"Simulated rate limit",
+  alert:"Generate alert only",log:"Log only",none:"No action"
+};
+let packets=[],threats=[],responses=[],logs=[];
+let running=false,timer=null,total=0,normal=0,suspicious=0,lastPps=0;
+let history=Array.from({length:20},()=>({normal:0,suspicious:0}));
+let toastTimer=null;
+let policy={High:"block",Medium:"flag",Low:"limit"};
 
-  function createPacket(){
-    const isSuspicious=Math.random()<0.19;
-    const protocol=pick(protocols);
-    const source=isSuspicious
-      ?pick(["203.0.113.42","198.51.100.77","10.0.2.18",...sourcePool])
-      :pick(sourcePool);
-    const packet={
-      time:timeNow(),source,destination:pick(destPool),protocol,
-      port:isSuspicious?pick([22,23,445,3389,8080,443]):pick([80,443,53,8080,3000]),
-      suspicious:isSuspicious
-    };
-    packets.unshift(packet);
-    packets=packets.slice(0,500);
-    total++;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const timeNow=()=>new Date().toLocaleTimeString();
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function badge(v){
+  const cls=["High","Medium","Low"].includes(v)?v.toLowerCase():v==="Suspicious"?"medium":v==="Normal"?"low":"";
+  return `<span class="pill ${cls}">${esc(v)}</span>`;
+}
+function toast(msg){
+  $("toast").textContent=msg;$("toast").style.display="block";
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").style.display="none",2300);
+}
+function addLog(event,source,details,severity=""){
+  logs.unshift({time:timeNow(),event,source,details,severity});
+  logs=logs.slice(0,500);
+}
+function responseAction(severity){return policy[severity]||"none";}
 
-    if(isSuspicious){
-      suspicious++;
-      history[history.length-1].suspicious++;
-      detectThreat(packet);
+function createPacket(){
+  const isSuspicious=Math.random()<.22;
+  const packet={
+    time:timeNow(),
+    source:isSuspicious?pick(["203.0.113.42","198.51.100.77",...sources]):pick(sources),
+    destination:pick(destinations),
+    protocol:pick(protocols),
+    port:isSuspicious?pick([22,23,445,3389,8080,443]):pick([80,443,53,8080,3000]),
+    suspicious:isSuspicious
+  };
+  packets.unshift(packet);packets=packets.slice(0,500);total++;
+  if(isSuspicious){
+    suspicious++;history[history.length-1].suspicious++;detectThreat(packet);
+  }else{
+    normal++;history[history.length-1].normal++;
+  }
+  lastPps=Math.max(1,Math.round(1000/Number($("speed").value)));
+  addLog("Packet observed",packet.source,`${packet.protocol} traffic to port ${packet.port}`);
+  if(total%5===0){history.push({normal:0,suspicious:0});history.shift();}
+}
+function detectThreat(packet){
+  const id=pick(Object.keys(rules));
+  const rule=rules[id];
+  const threat={
+    time:timeNow(),source:packet.source,type:rule.name,severity:rule.severity,
+    confidence:Math.min(99,rule.confidence+Math.floor(Math.random()*4)),
+    rule:id,destination:packet.destination,port:packet.port
+  };
+  threats.unshift(threat);threats=threats.slice(0,300);
+  addLog("Threat detected",threat.source,`${threat.type} (${id})`,threat.severity);
+
+  if($("autoToggle").checked){
+    const action=responseAction(threat.severity);
+    if(action!=="none"){
+      responses.unshift({
+        time:timeNow(),source:threat.source,threat:threat.type,
+        action:actionNames[action],status:"Simulated",severity:threat.severity
+      });
+      responses=responses.slice(0,300);
+      addLog("Response triggered",threat.source,actionNames[action],threat.severity);
     }else{
-      normal++;
-      history[history.length-1].normal++;
-    }
-
-    lastPps=Math.max(1,Math.round(1000/Number($("speed").value)));
-    addLog("Packet observed",source,`${protocol} traffic to port ${packet.port}`,isSuspicious?"Medium":"Info");
-
-    if(total%5===0){
-      history.push({normal:0,suspicious:0});
-      history.shift();
+      addLog("No response action",threat.source,"Policy is set to No action",threat.severity);
     }
   }
+}
 
-  function detectThreat(packet){
-    const rule=pick(threatTypes);
-    const threat={
-      time:timeNow(),source:packet.source,type:rule.name,
-      severity:rule.severity,confidence:rule.confidence+rand(4),
-      rule:rule.rule
-    };
-    threats.unshift(threat);
-    threats=threats.slice(0,300);
-    addLog("Threat detected",threat.source,threat.type,threat.severity);
-
-    if($("autoToggle").checked){
-      const enabled=threat.severity==="High"?$("ruleBlock").checked:
-        threat.severity==="Medium"?$("ruleFlag").checked:$("ruleLimit").checked;
-      if(enabled){
-        const action=threat.severity==="High"?"Simulated block":
-          threat.severity==="Medium"?"Flag for review":"Simulated rate limit";
-        responses.unshift({
-          time:timeNow(),source:threat.source,threat:threat.type,
-          action,status:"Simulated"
-        });
-        responses=responses.slice(0,300);
-        addLog("Response triggered",threat.source,action,threat.severity);
-      }
-    }
+function drawChart(){
+  const c=$("trafficChart");if(!c||!c.offsetWidth)return;
+  const dpr=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;
+  c.width=w*dpr;c.height=h*dpr;
+  const ctx=c.getContext("2d");ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);
+  const pad={l:27,r:8,t:10,b:22},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+  const max=Math.max(5,...history.map(v=>v.normal+v.suspicious));
+  ctx.font="10px system-ui";ctx.fillStyle="#888";ctx.strokeStyle="#eee";
+  for(let i=0;i<5;i++){
+    const y=pad.t+ch*i/4;
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();
+    ctx.fillText(Math.round(max*(4-i)/4),0,y+3);
   }
-
-  function drawChart(){
-    const canvas=$("trafficChart");
-    if(!canvas||!canvas.offsetWidth)return;
-    const dpr=window.devicePixelRatio||1;
-    const w=canvas.clientWidth,h=canvas.clientHeight;
-    canvas.width=w*dpr;canvas.height=h*dpr;
-    const ctx=canvas.getContext("2d");
-    ctx.scale(dpr,dpr);
-    ctx.clearRect(0,0,w,h);
-    const pad={l:27,r:8,t:10,b:22};
-    const cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
-    const max=Math.max(5,...history.map(v=>v.normal+v.suspicious));
-
-    ctx.font="10px system-ui";
-    ctx.fillStyle="#888";
-    ctx.strokeStyle="#eee";
-    for(let i=0;i<5;i++){
-      const y=pad.t+ch*i/4;
-      ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();
-      ctx.fillText(Math.round(max*(4-i)/4),0,y+3);
-    }
-
-    const step=cw/history.length;
-    history.forEach((v,i)=>{
-      const x=pad.l+i*step+step*.15;
-      const bw=Math.max(2,step*.65);
-      const normalHeight=v.normal/max*ch;
-      const suspiciousHeight=v.suspicious/max*ch;
-      ctx.fillStyle="#222";
-      ctx.fillRect(x,pad.t+ch-normalHeight,bw,normalHeight);
-      ctx.fillStyle="#aaa";
-      ctx.fillRect(x,pad.t+ch-normalHeight-suspiciousHeight,bw,suspiciousHeight);
-    });
-    ctx.fillStyle="#888";
-    ctx.fillText("Older",pad.l,h-3);
-    ctx.fillText("Now",w-28,h-3);
-  }
-
-  function renderSeverityDistribution(){
-    const high=threats.filter(t=>t.severity==="High").length;
-    const medium=threats.filter(t=>t.severity==="Medium").length;
-    const low=threats.filter(t=>t.severity==="Low").length;
-    const max=Math.max(1,high,medium,low);
-
-    $("distHigh").textContent=high;
-    $("distMedium").textContent=medium;
-    $("distLow").textContent=low;
-    $("distTotal").textContent=threats.length;
-
-    $("barHigh").style.width=(high/max*100)+"%";
-    $("barMedium").style.width=(medium/max*100)+"%";
-    $("barLow").style.width=(low/max*100)+"%";
-  }
-
-  function render(){
-    $("packets").textContent=total.toLocaleString();
-    $("threatCount").textContent=threats.length;
-    $("pps").textContent=running?lastPps:0;
-    $("responseCount").textContent=responses.length;
-    $("trafficTotal").textContent=total;
-    $("normalTotal").textContent=normal;
-    $("suspiciousTotal").textContent=suspicious;
-    $("uniqueIPs").textContent=new Set(packets.map(p=>p.source)).size;
-
-    $("highCount").textContent=threats.filter(t=>t.severity==="High").length;
-    $("mediumCount").textContent=threats.filter(t=>t.severity==="Medium").length;
-    $("lowCount").textContent=threats.filter(t=>t.severity==="Low").length;
-
-    $("liveDot").classList.toggle("live",running);
-    $("liveText").textContent=running?"SIMULATION RUNNING":"SIMULATION PAUSED";
-    $("generatorStatus").textContent=running?"Running":"Stopped";
-    $("autoStatus").textContent=$("autoToggle").checked?"Enabled":"Disabled";
-    $("toggle").textContent=running?"Pause simulation":"Start simulation";
-
-    $("latestThreats").innerHTML=threats.slice(0,5).map(t=>
-      `<tr><td>${escapeHTML(t.source)}</td><td>${escapeHTML(t.type)}</td><td>${pill(t.severity)}</td></tr>`
-    ).join("")||`<tr><td colspan="3" class="empty">No threats detected yet. Start the simulation.</td></tr>`;
-
-    const filter=$("trafficFilter").value;
-    const filteredPackets=packets.filter(p=>
-      filter==="all"||(filter==="normal"&&!p.suspicious)||(filter==="suspicious"&&p.suspicious)
-    );
-    $("trafficRows").innerHTML=filteredPackets.slice(0,100).map(p=>
-      `<tr><td>${escapeHTML(p.time)}</td><td>${escapeHTML(p.source)}</td><td>${escapeHTML(p.destination)}</td><td>${p.protocol}</td><td>${p.port}</td><td>${pill(p.suspicious?"Suspicious":"Normal")}</td></tr>`
-    ).join("")||`<tr><td colspan="6" class="empty">No packet records yet.</td></tr>`;
-
-    const severity=$("severityFilter").value;
-    const filteredThreats=threats.filter(t=>severity==="all"||t.severity===severity);
-    $("threatRows").innerHTML=filteredThreats.map(t=>
-      `<tr><td>${escapeHTML(t.time)}</td><td>${escapeHTML(t.source)}</td><td>${escapeHTML(t.type)}</td><td>${pill(t.severity)}</td><td>${t.confidence}%</td><td>${t.rule}</td></tr>`
-    ).join("")||`<tr><td colspan="6" class="empty">No matching threats.</td></tr>`;
-
-    $("responseRows").innerHTML=responses.map(r=>
-      `<tr><td>${escapeHTML(r.time)}</td><td>${escapeHTML(r.source)}</td><td>${escapeHTML(r.threat)}</td><td>${escapeHTML(r.action)}</td><td>${pill(r.status)}</td></tr>`
-    ).join("")||`<tr><td colspan="5" class="empty">No responses recorded yet.</td></tr>`;
-
-    $("logRows").innerHTML=logs.map(l=>
-      `<tr><td>${escapeHTML(l.time)}</td><td>${escapeHTML(l.event)}</td><td>${escapeHTML(l.source)}</td><td>${escapeHTML(l.details)}</td><td>${pill(l.severity)}</td></tr>`
-    ).join("")||`<tr><td colspan="5" class="empty">No events recorded yet.</td></tr>`;
-
-    renderSeverityDistribution();
-    drawChart();
-  }
-
-  function start(){
-    if(running)return;
-    running=true;
-    clearInterval(interval);
-    interval=setInterval(tick,Number($("speed").value));
-    render();
-    toast("Traffic simulation started");
-  }
-  function pause(){
-    running=false;
-    clearInterval(interval);
-    interval=null;
-    render();
-    toast("Traffic simulation paused");
-  }
-  function tick(){
-    createPacket();
-    render();
-  }
-  function reset(){
-    pause();
-    packets=[];threats=[];responses=[];logs=[];
-    total=0;normal=0;suspicious=0;lastPps=0;
-    history=Array.from({length:20},()=>({normal:0,suspicious:0}));
-    addLog("System reset","—","Simulation data cleared","Info");
-    render();
-    toast("Simulation data reset");
-  }
-
-  function csvCell(value){
-    let s=String(value??"");
-    if(/^[=+\-@\t\r]/.test(s))s="'"+s;
-    return '"'+s.replace(/"/g,'""')+'"';
-  }
-  function downloadCSV(filename,rows){
-    const csv="\uFEFF"+rows.map(row=>row.map(csvCell).join(",")).join("\r\n");
-    const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");
-    a.href=url;a.download=filename;
-    document.body.appendChild(a);a.click();a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),1000);
-    toast("CSV report downloaded");
-  }
-  function exportThreats(){
-    downloadCSV("5g-threats.csv",[
-      ["Time","Source IP","Threat","Severity","Confidence","Rule"],
-      ...threats.map(t=>[t.time,t.source,t.type,t.severity,t.confidence+"%",t.rule])
-    ]);
-  }
-  function exportResponses(){
-    downloadCSV("5g-security-responses.csv",[
-      ["Time","Source IP","Threat","Action","Status"],
-      ...responses.map(r=>[r.time,r.source,r.threat,r.action,r.status])
-    ]);
-  }
-  function exportAll(){
-    const rows=[["Record Type","Time","Source IP","Details","Severity","Extra"]];
-    packets.forEach(p=>rows.push(["Packet",p.time,p.source,`${p.protocol} to ${p.destination}:${p.port}`,p.suspicious?"Suspicious":"Normal",""]));
-    threats.forEach(t=>rows.push(["Threat",t.time,t.source,t.type,t.severity,`${t.confidence}% confidence; ${t.rule}`]));
-    responses.forEach(r=>rows.push(["Response",r.time,r.source,r.threat,"Info",`${r.action}; ${r.status}`]));
-    logs.forEach(l=>rows.push(["Event",l.time,l.source,l.details,l.severity,l.event]));
-    downloadCSV("5g-security-report.csv",rows);
-  }
-
-  document.querySelectorAll(".tab").forEach(button=>button.addEventListener("click",()=>{
-    document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===button));
-    document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===button.dataset.page));
-    render();
-  }));
-  document.querySelectorAll("[data-goto]").forEach(button=>button.addEventListener("click",()=>{
-    document.querySelector(`[data-page="${button.dataset.goto}"]`).click();
-  }));
-
-  $("toggle").addEventListener("click",()=>running?pause():start());
-  $("reset").addEventListener("click",reset);
-  $("speed").addEventListener("change",()=>{
-    if(running){
-      clearInterval(interval);
-      interval=setInterval(tick,Number($("speed").value));
-    }
-    toast("Traffic speed updated");
+  const step=cw/history.length;
+  history.forEach((v,i)=>{
+    const x=pad.l+i*step+step*.15,bw=Math.max(2,step*.65);
+    const nh=v.normal/max*ch,sh=v.suspicious/max*ch;
+    ctx.fillStyle="#222";ctx.fillRect(x,pad.t+ch-nh,bw,nh);
+    ctx.fillStyle="#aaa";ctx.fillRect(x,pad.t+ch-nh-sh,bw,sh);
   });
-  $("trafficFilter").addEventListener("change",render);
-  $("severityFilter").addEventListener("change",render);
-  $("autoToggle").addEventListener("change",()=>{
-    render();toast("Automation setting updated");
-  });
-  ["ruleBlock","ruleFlag","ruleLimit"].forEach(id=>
-    $(id).addEventListener("change",()=>toast("Response rule updated"))
-  );
-  $("exportThreats").addEventListener("click",exportThreats);
-  $("exportResponses").addEventListener("click",exportResponses);
-  $("exportAll").addEventListener("click",exportAll);
+  ctx.fillStyle="#888";ctx.fillText("Older",pad.l,h-3);ctx.fillText("Now",w-28,h-3);
+}
 
-  $("clearResponses").addEventListener("click",()=>{
-    responses=[];
-    addLog("History cleared","—","Response history cleared","Info");
-    render();toast("Response history cleared");
-  });
-  $("clearLogs").addEventListener("click",()=>{
-    logs=[];
-    addLog("Logs cleared","—","Event log cleared","Info");
-    render();toast("Event log cleared");
-  });
-  window.addEventListener("resize",drawChart);
+function showRule(id){
+  const r=rules[id];if(!r)return;
+  $("ruleDetails").hidden=false;
+  $("ruleDetails").innerHTML=`
+    <div class="section-head">
+      <div><span class="pill">${id}</span> <strong>${esc(r.name)}</strong></div>
+      <button class="btn" id="closeRule">Close details</button>
+    </div>
+    <p>${esc(r.description)}</p>
+    <div class="detail-grid">
+      <div class="detail-box"><strong>Detection condition</strong><span>${esc(r.condition)}</span></div>
+      <div class="detail-box"><strong>Default severity</strong><span>${badge(r.severity)}</span></div>
+      <div class="detail-box"><strong>Demonstration confidence</strong><span>${r.confidence}% base score. This is not a calibrated probability.</span></div>
+      <div class="detail-box"><strong>Response behavior</strong><span>${esc(r.response)}</span></div>
+    </div>
+    <strong>Recommended investigation</strong>
+    <p class="hint">${esc(r.recommendation)}</p>
+    <p class="hint">Note: this rule is represented by simulated events; it does not inspect real packet contents.</p>`;
+  $("closeRule").addEventListener("click",()=>{$("ruleDetails").hidden=true;});
+  $("ruleDetails").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function renderRuleLibrary(){
+  $("ruleLibrary").innerHTML=Object.entries(rules).map(([id,r])=>`
+    <div class="rule">
+      <div><div class="rule-title">${id} · ${esc(r.name)}</div><div class="rule-desc">${esc(r.description)}</div></div>
+      <button class="rule-link" data-rule="${id}">View rule →</button>
+    </div>`).join("");
+  $("ruleLibrary").querySelectorAll("[data-rule]").forEach(b=>b.addEventListener("click",()=>showRule(b.dataset.rule)));
+}
+function renderPolicy(){
+  $("policySummary").innerHTML=["High","Medium","Low"].map(s=>`
+    <div class="rule"><div><div class="rule-title">${s} severity</div><div class="rule-desc">Action for new detections</div></div>
+    <strong style="font-size:12px">${esc(actionNames[policy[s]])}</strong></div>`).join("");
+}
+function renderSeverity(){
+  const counts={High:0,Medium:0,Low:0};
+  threats.forEach(t=>counts[t.severity]++);
+  const max=Math.max(1,...Object.values(counts));
+  $("distHigh").textContent=counts.High;$("distMedium").textContent=counts.Medium;
+  $("distLow").textContent=counts.Low;$("distTotal").textContent=threats.length;
+  $("barHigh").style.width=counts.High/max*100+"%";
+  $("barMedium").style.width=counts.Medium/max*100+"%";
+  $("barLow").style.width=counts.Low/max*100+"%";
+}
+function render(){
+  $("packets").textContent=total.toLocaleString();
+  $("threatCount").textContent=threats.length;
+  $("pps").textContent=running?lastPps:0;
+  $("responseCount").textContent=responses.length;
+  $("trafficTotal").textContent=total;
+  $("normalTotal").textContent=normal;
+  $("suspiciousTotal").textContent=suspicious;
+  $("uniqueIPs").textContent=new Set(packets.map(p=>p.source)).size;
+  $("highCount").textContent=threats.filter(t=>t.severity==="High").length;
+  $("mediumCount").textContent=threats.filter(t=>t.severity==="Medium").length;
+  $("lowCount").textContent=threats.filter(t=>t.severity==="Low").length;
+  $("liveDot").classList.toggle("live",running);
+  $("liveText").textContent=running?"SIMULATION RUNNING":"SIMULATION PAUSED";
+  $("generatorStatus").textContent=running?"Running":"Stopped";
+  $("autoStatus").textContent=$("autoToggle").checked?"Enabled":"Disabled";
+  $("toggle").textContent=running?"Pause simulation":"Start simulation";
 
-  addLog("System initialized","—","Local security demo ready","Info");
+  $("latestThreats").innerHTML=threats.slice(0,5).map(t=>
+    `<tr><td>${esc(t.source)}</td><td>${esc(t.type)}</td><td>${badge(t.severity)}</td></tr>`
+  ).join("")||`<tr><td colspan="3" class="empty">No threats detected yet. Start the simulation.</td></tr>`;
+
+  const tf=$("trafficFilter").value;
+  const shownPackets=packets.filter(p=>tf==="all"||(tf==="normal"&&!p.suspicious)||(tf==="suspicious"&&p.suspicious));
+  $("trafficRows").innerHTML=shownPackets.slice(0,100).map(p=>
+    `<tr><td>${esc(p.time)}</td><td>${esc(p.source)}</td><td>${esc(p.destination)}</td><td>${p.protocol}</td><td>${p.port}</td><td>${badge(p.suspicious?"Suspicious":"Normal")}</td></tr>`
+  ).join("")||`<tr><td colspan="6" class="empty">No packet records yet.</td></tr>`;
+
+  const sf=$("severityFilter").value;
+  const shownThreats=threats.filter(t=>sf==="all"||t.severity===sf);
+  $("threatRows").innerHTML=shownThreats.map(t=>
+    `<tr><td>${esc(t.time)}</td><td>${esc(t.source)}</td><td>${esc(t.type)}</td><td>${badge(t.severity)}</td><td>${t.confidence}%</td><td><button class="rule-link" data-threat-rule="${t.rule}">${t.rule} ↗</button></td></tr>`
+  ).join("")||`<tr><td colspan="6" class="empty">No matching threats.</td></tr>`;
+  $("threatRows").querySelectorAll("[data-threat-rule]").forEach(b=>b.addEventListener("click",()=>showRule(b.dataset.threatRule)));
+
+  $("responseRows").innerHTML=responses.map(r=>
+    `<tr><td>${esc(r.time)}</td><td>${esc(r.source)}</td><td>${esc(r.threat)}</td><td>${esc(r.action)}</td><td>${badge(r.status)}</td></tr>`
+  ).join("")||`<tr><td colspan="5" class="empty">No responses recorded yet.</td></tr>`;
+
+  // Empty severity values are deliberately rendered as a dash, not "Info".
+  $("logRows").innerHTML=logs.map(l=>
+    `<tr><td>${esc(l.time)}</td><td>${esc(l.event)}</td><td>${esc(l.source)}</td><td>${esc(l.details)}</td><td>${l.severity?badge(l.severity):"—"}</td></tr>`
+  ).join("")||`<tr><td colspan="5" class="empty">No events recorded yet.</td></tr>`;
+
+  renderSeverity();renderPolicy();drawChart();
+}
+function tick(){createPacket();render();}
+function start(){
+  if(running)return;
+  running=true;clearInterval(timer);
+  timer=setInterval(tick,Number($("speed").value));
+  render();toast("Simulation started");
+}
+function pause(){
+  running=false;clearInterval(timer);timer=null;render();toast("Simulation paused");
+}
+function reset(){
+  pause();packets=[];threats=[];responses=[];logs=[];
+  total=0;normal=0;suspicious=0;lastPps=0;
+  history=Array.from({length:20},()=>({normal:0,suspicious:0}));
+  addLog("System reset","—","Simulation data cleared");
+  render();toast("Simulation reset");
+}
+function csvCell(value){
+  let s=String(value??"");
+  if(/^[=+\-@\t\r]/.test(s))s="'"+s;
+  return '"'+s.replace(/"/g,'""')+'"';
+}
+function downloadCSV(filename,rows){
+  const blob=new Blob(["\uFEFF"+rows.map(row=>row.map(csvCell).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);toast("CSV report downloaded");
+}
+function exportThreats(){
+  downloadCSV("5g-threats.csv",[
+    ["Time","Source IP","Threat","Severity","Confidence","Rule"],
+    ...threats.map(t=>[t.time,t.source,t.type,t.severity,t.confidence+"%",t.rule])
+  ]);
+}
+function exportResponses(){
+  downloadCSV("5g-responses.csv",[
+    ["Time","Source IP","Threat","Action","Status"],
+    ...responses.map(r=>[r.time,r.source,r.threat,r.action,r.status])
+  ]);
+}
+function exportAll(){
+  const rows=[["Record Type","Time","Source IP","Details","Severity","Extra"]];
+  packets.forEach(p=>rows.push(["Packet",p.time,p.source,`${p.protocol} to ${p.destination}:${p.port}`,p.suspicious?"Suspicious":"Normal",""]));
+  threats.forEach(t=>rows.push(["Threat",t.time,t.source,t.type,t.severity,`${t.confidence}% confidence; ${t.rule}`]));
+  responses.forEach(r=>rows.push(["Response",r.time,r.source,r.threat,r.severity,`${r.action}; ${r.status}`]));
+  logs.forEach(l=>rows.push(["Event",l.time,l.source,l.details,l.severity||"",l.event]));
+  downloadCSV("5g-security-report.csv",rows);
+}
+
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));
+  document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===b.dataset.page));
   render();
+}));
+document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelector(`[data-page="${b.dataset.goto}"]`).click();
+}));
+$("toggle").addEventListener("click",()=>running?pause():start());
+$("reset").addEventListener("click",reset);
+$("speed").addEventListener("change",()=>{
+  if(running){clearInterval(timer);timer=setInterval(tick,Number($("speed").value));}
+  toast("Traffic speed updated");
+});
+$("trafficFilter").addEventListener("change",render);
+$("severityFilter").addEventListener("change",render);
+$("autoToggle").addEventListener("change",()=>{render();toast("Automation setting updated");});
+
+$("savePolicy").addEventListener("click",()=>{
+  policy={
+    High:$("policyHigh").value,
+    Medium:$("policyMedium").value,
+    Low:$("policyLow").value
+  };
+  renderPolicy();toast("Response policy saved");
+});
+$("resetPolicy").addEventListener("click",()=>{
+  policy={High:"block",Medium:"flag",Low:"limit"};
+  $("policyHigh").value=policy.High;
+  $("policyMedium").value=policy.Medium;
+  $("policyLow").value=policy.Low;
+  renderPolicy();toast("Default policy restored");
+});
+$("exportThreats").addEventListener("click",exportThreats);
+$("exportResponses").addEventListener("click",exportResponses);
+$("exportAll").addEventListener("click",exportAll);
+$("clearResponses").addEventListener("click",()=>{
+  responses=[];addLog("History cleared","—","Response history cleared");render();toast("Response history cleared");
+});
+$("clearLogs").addEventListener("click",()=>{
+  logs=[];render();toast("Event logs cleared");
+});
+window.addEventListener("resize",drawChart);
+
+renderRuleLibrary();
+addLog("System initialized","—","Local security demo ready");
+render();
 })();
 </script>
 </body>
