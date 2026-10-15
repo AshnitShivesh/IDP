@@ -6,173 +6,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>5G Network Threat Detection</title>
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #fff;
-  color: #111;
-  font-size: 14px;
-}
-
-header {
-  background: #fff;
-  border-bottom: 1px solid #ddd;
-  padding: 20px 6%;
-}
-
-header h2 { margin: 0; font-size: 20px; font-weight: 600; }
-header p { margin: 5px 0 0; color: #666; }
-
-nav {
-  background: #fff;
-  padding: 0 6%;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 22px;
-}
-
-nav button {
-  padding: 14px 0;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  background: transparent;
-  color: #555;
-  cursor: pointer;
-}
-
-nav button.active {
-  border-bottom-color: #111;
-  color: #111;
-  font-weight: 600;
-}
-
-main { max-width: 1150px; margin: 28px auto; padding: 0 20px; }
-.page { display: none; }
-.page.active { display: block; }
-
-h1 { font-size: 23px; font-weight: 600; margin: 0 0 6px; }
-h3 { font-size: 16px; font-weight: 600; margin: 0 0 16px; }
-.subtitle { color: #666; margin: 0 0 22px; }
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 24px;
-}
-
-.card {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 18px;
-  margin-bottom: 18px;
-}
-
-.label { color: #666; font-size: 13px; }
-.number { font-size: 27px; margin-top: 9px; font-weight: 600; }
-
-.blue, .red, .orange, .green { color: #222; }
-
-button, select, input { font: inherit; }
-
-.action {
-  padding: 9px 13px;
-  background: #111;
-  border: 1px solid #111;
-  border-radius: 3px;
-  color: #fff;
-  cursor: pointer;
-}
-
-.action.secondary {
-  background: #fff;
-  color: #111;
-  border-color: #bbb;
-}
-
-.action.danger {
-  background: #333;
-  border-color: #333;
-  color: #fff;
-}
-
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-bottom: 16px;
-}
-
-input, select {
-  padding: 9px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  background: #fff;
-  color: #111;
-}
-
-input { min-width: 180px; }
-
-table { width: 100%; border-collapse: collapse; min-width: 650px; }
-
-th, td {
-  text-align: left;
-  padding: 12px 10px;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-th { color: #333; background: #f5f5f5; font-weight: 600; }
-td { font-size: 13px; }
-.table-wrap { overflow-x: auto; }
-
-.status { font-size: 12px; font-weight: 600; }
-
-.notice {
-  background: #f7f7f7;
-  border: 1px solid #ddd;
-  padding: 12px 14px;
-  color: #444;
-  margin-bottom: 22px;
-  line-height: 1.5;
-}
-
-.columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-.barline { margin: 17px 0; }
-.bartext { display: flex; justify-content: space-between; margin-bottom: 7px; }
-.bar { height: 8px; background: #eee; }
-.bar span { display: block; height: 100%; background: #333; }
-
-.event { padding: 12px 0; border-bottom: 1px solid #eee; }
-.event:last-child { border-bottom: 0; }
-.muted { color: #777; font-size: 12px; }
-
-footer {
-  text-align: center;
-  padding: 22px;
-  color: #777;
-  font-size: 12px;
-}
-
-@media(max-width:750px) {
-  .cards { grid-template-columns: repeat(2, 1fr); }
-  .columns { grid-template-columns: 1fr; }
-  header { padding: 17px 20px; }
-  nav { padding: 0 20px; gap: 16px; }
-  main { margin-top: 22px; padding: 0 14px; }
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#111;font-size:14px}
+header{padding:19px 6%;border-bottom:1px solid #ddd}
+header h2{font-size:20px;margin:0;font-weight:600}
+header p{color:#666;margin:5px 0 0}
+nav{display:flex;gap:22px;flex-wrap:wrap;padding:0 6%;border-bottom:1px solid #ddd}
+nav button{border:0;border-bottom:2px solid transparent;background:#fff;color:#555;padding:14px 0;cursor:pointer}
+nav button.active{border-bottom-color:#111;color:#111;font-weight:600}
+main{max-width:1150px;margin:28px auto;padding:0 20px}
+.page{display:none}.page.active{display:block}
+h1{font-size:23px;font-weight:600;margin:0 0 6px}
+h3{font-size:16px;margin:0 0 16px;font-weight:600}
+.subtitle{color:#666;margin:0 0 22px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.card{border:1px solid #ddd;border-radius:4px;padding:17px;margin-bottom:18px;background:#fff;min-width:0}
+.label{color:#666;font-size:13px}
+.number{font-size:27px;margin-top:9px;font-weight:600}
+.controls{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+button,input,select{font:inherit}
+.action{padding:9px 13px;background:#111;color:#fff;border:1px solid #111;border-radius:3px;cursor:pointer}
+.action.secondary{background:#fff;color:#111;border-color:#bbb}
+.action:disabled{opacity:.45;cursor:not-allowed}
+input,select{padding:9px;border:1px solid #ccc;border-radius:3px;background:#fff;color:#111}
+input{min-width:160px}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+table{width:100%;border-collapse:collapse;min-width:680px}
+th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #e5e5e5}
+th{background:#f5f5f5;color:#333;font-weight:600}
+td{font-size:13px}
+.table-wrap{overflow-x:auto}
+.muted{color:#777;font-size:12px}
+.status{font-size:12px;font-weight:600}
+.red{color:#222}.green{color:#222}.orange{color:#555}
+.notice{background:#f7f7f7;border:1px solid #ddd;padding:12px 14px;color:#444;margin-bottom:22px;line-height:1.5}
+.barline{margin:17px 0}
+.bartext{display:flex;justify-content:space-between;margin-bottom:7px}
+.bar{height:8px;background:#eee}
+.bar span{display:block;height:100%;background:#333;transition:width .3s}
+.event{padding:12px 0;border-bottom:1px solid #eee;overflow-wrap:anywhere}
+.event:last-child{border-bottom:0}
+.dot{display:inline-block;width:7px;height:7px;background:#777;border-radius:50%;margin-right:6px}
+.dot.live{background:#111}
+.live-label{font-size:12px;color:#555}
+footer{text-align:center;padding:22px;color:#777;font-size:12px}
+@media(max-width:750px){
+ .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .columns{grid-template-columns:1fr}
+ header{padding:17px 20px}
+ nav{padding:0 20px;gap:16px}
+ main{margin-top:22px;padding:0 14px}
 }
 </style>
 </head>
 <body>
-
 <header>
   <h2>5G Network Threat Detection System</h2>
   <p>Network monitoring and security response</p>
@@ -183,56 +70,40 @@ footer {
   <button data-page="traffic">Network Traffic</button>
   <button data-page="threats">Threats</button>
   <button data-page="response">Security Response</button>
+  <button data-page="logs">Event Logs</button>
 </nav>
 
 <main>
   <div class="notice">
-    Prototype using sample data. Detection uses demonstration rules.
-    Response actions are simulated and do not affect a real network.
+    <strong>Simulation mode:</strong> Traffic is generated locally in your browser.
+    Threat detection uses demonstration rules. Response actions do not affect a real network.
   </div>
 
   <section id="dashboard" class="page active">
     <h1>Dashboard</h1>
     <p class="subtitle">Overview of network traffic and detected threats.</p>
 
-    <div class="cards">
-      <div class="card">
-        <div class="label">Traffic records</div>
-        <div class="number" id="total">8</div>
-      </div>
-      <div class="card">
-        <div class="label">Detected threats</div>
-        <div class="number" id="threatCount">—</div>
-      </div>
-      <div class="card">
-        <div class="label">High severity</div>
-        <div class="number" id="highCount">—</div>
-      </div>
-      <div class="card">
-        <div class="label">Response actions</div>
-        <div class="number" id="actionsCount">0</div>
-      </div>
+    <div class="controls">
+      <button class="action" id="startBtn" onclick="startSimulation()">Start simulation</button>
+      <button class="action secondary" onclick="stopSimulation()">Pause</button>
+      <button class="action secondary" onclick="resetDemo()">Reset</button>
+      <span class="live-label" id="simStatus"><span class="dot"></span>Simulation paused</span>
     </div>
 
-    <div class="controls">
-      <button class="action" onclick="analyze()">Analyze traffic</button>
-      <button class="action secondary" onclick="resetDemo()">Reset demo</button>
+    <div class="cards">
+      <div class="card"><div class="label">Traffic records</div><div class="number" id="total">0</div></div>
+      <div class="card"><div class="label">Detected threats</div><div class="number" id="threatCount">0</div></div>
+      <div class="card"><div class="label">High severity</div><div class="number" id="highCount">0</div></div>
+      <div class="card"><div class="label">Response actions</div><div class="number" id="actionsCount">0</div></div>
     </div>
 
     <div class="columns">
       <div class="card">
         <h3>Traffic classification</h3>
-        <div class="barline">
-          <div class="bartext"><span>Normal traffic</span><span id="normalPct">—</span></div>
-          <div class="bar"><span id="normalBar" style="width:0%"></span></div>
-        </div>
-        <div class="barline">
-          <div class="bartext"><span>Suspicious traffic</span><span id="threatPct">—</span></div>
-          <div class="bar"><span id="threatBar" style="width:0%"></span></div>
-        </div>
-        <p class="muted" id="analysisStatus">Analysis has not been run.</p>
+        <div class="barline"><div class="bartext"><span>Normal traffic</span><span id="normalPct">0%</span></div><div class="bar"><span id="normalBar" style="width:0%"></span></div></div>
+        <div class="barline"><div class="bartext"><span>Suspicious traffic</span><span id="threatPct">0%</span></div><div class="bar"><span id="threatBar" style="width:0%"></span></div></div>
+        <p class="muted" id="analysisStatus">Start the simulation to generate traffic.</p>
       </div>
-
       <div class="card">
         <h3>Recent events</h3>
         <div id="recentEvents"><p class="muted">No events recorded.</p></div>
@@ -242,8 +113,7 @@ footer {
 
   <section id="traffic" class="page">
     <h1>Network Traffic</h1>
-    <p class="subtitle">Sample network flow records.</p>
-
+    <p class="subtitle">Generated network flow records.</p>
     <div class="card">
       <div class="controls">
         <input id="search" placeholder="Search source IP..." oninput="renderTraffic()">
@@ -253,246 +123,255 @@ footer {
           <option value="threat">Suspicious only</option>
         </select>
       </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Source IP</th><th>Traffic type</th><th>Packets</th>
-              <th>Protocol</th><th>Detection</th><th>Severity</th>
-            </tr>
-          </thead>
-          <tbody id="trafficTable"></tbody>
-        </table>
-      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Time</th><th>Source IP</th><th>Traffic type</th><th>Packets</th><th>Protocol</th><th>Detection</th><th>Severity</th></tr></thead>
+        <tbody id="trafficTable"></tbody>
+      </table></div>
     </div>
   </section>
 
   <section id="threats" class="page">
     <h1>Detected Threats</h1>
-    <p class="subtitle">Suspicious traffic patterns identified during analysis.</p>
-
-    <div class="card">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Source IP</th><th>Threat type</th>
-              <th>Severity</th><th>Suggested action</th>
-            </tr>
-          </thead>
-          <tbody id="threatTable"></tbody>
-        </table>
-      </div>
-    </div>
+    <p class="subtitle">Suspicious patterns identified by the simulation rules.</p>
+    <div class="card"><div class="table-wrap"><table>
+      <thead><tr><th>Time</th><th>Source IP</th><th>Threat type</th><th>Severity</th><th>Response status</th></tr></thead>
+      <tbody id="threatTable"></tbody>
+    </table></div></div>
   </section>
 
   <section id="response" class="page">
     <h1>Security Response</h1>
-    <p class="subtitle">Simulate a response to a suspicious connection.</p>
-
+    <p class="subtitle">Simulate a response to a detected suspicious connection.</p>
     <div class="columns">
       <div class="card">
         <h3>Response controls</h3>
-        <p class="muted">Run traffic analysis before selecting a threat.</p>
-
+        <p class="muted">Start the simulation and select a suspicious source IP.</p>
         <p>Source IP</p>
         <select id="target" style="width:100%;margin:7px 0 16px"></select>
-
         <p>Action</p>
         <select id="responseType" style="width:100%;margin:7px 0 16px">
           <option>Simulated block</option>
           <option>Flag for review</option>
           <option>Simulated rate limit</option>
         </select>
-
-        <button class="action danger" onclick="respond()">Run response</button>
+        <button class="action" onclick="respond()">Run response</button>
         <p id="responseMessage" class="muted"></p>
       </div>
-
       <div class="card">
         <h3>Verification</h3>
         <div id="verification"><p class="muted">No response performed.</p></div>
       </div>
     </div>
-
     <div class="card">
       <h3>Response history</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Time</th><th>Source IP</th><th>Action</th><th>Result</th></tr></thead>
-          <tbody id="responseTable"></tbody>
-        </table>
-      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Time</th><th>Source IP</th><th>Action</th><th>Result</th></tr></thead>
+        <tbody id="responseTable"></tbody>
+      </table></div>
     </div>
   </section>
 
-  <footer>Academic project prototype · Sample data only</footer>
+  <section id="logs" class="page">
+    <h1>Event Logs</h1>
+    <p class="subtitle">Recent activity during this browser session.</p>
+    <div class="card"><div id="allEvents"><p class="muted">No events recorded.</p></div></div>
+  </section>
+
+  <footer>5G Network Threat Detection · Academic prototype · Simulated data</footer>
 </main>
 
 <script>
-const original = [
-  {ip:"192.168.1.10",type:"Normal traffic",packets:120,protocol:"TCP",threat:false,severity:"Low"},
-  {ip:"192.168.1.24",type:"Port scan pattern",packets:950,protocol:"TCP",threat:true,severity:"High"},
-  {ip:"192.168.1.35",type:"Normal traffic",packets:85,protocol:"UDP",threat:false,severity:"Low"},
-  {ip:"192.168.1.48",type:"Flood-like pattern",packets:4800,protocol:"UDP",threat:true,severity:"High"},
-  {ip:"192.168.1.62",type:"Unusual connection",packets:620,protocol:"TCP",threat:true,severity:"Medium"},
-  {ip:"192.168.1.77",type:"Normal traffic",packets:160,protocol:"HTTP",threat:false,severity:"Low"},
-  {ip:"192.168.1.81",type:"Normal traffic",packets:240,protocol:"TCP",threat:false,severity:"Low"},
-  {ip:"192.168.1.92",type:"Repeated requests",packets:2200,protocol:"HTTP",threat:true,severity:"Medium"}
+const traffic = [];
+const events = [];
+const responses = [];
+const blockedIPs = new Set();
+let running = false;
+let timer = null;
+let sequence = 0;
+
+const normalTypes = ["Normal data","Web request","Data transfer","DNS request"];
+const suspiciousTypes = [
+  {type:"Port scan pattern",severity:"High",packets:[900,1800]},
+  {type:"Flood-like pattern",severity:"High",packets:[3000,7000]},
+  {type:"Unusual connection",severity:"Medium",packets:[500,1400]},
+  {type:"Repeated requests",severity:"Medium",packets:[1500,2800]}
 ];
 
-let traffic = [];
-let analyzed = false;
-let events = [];
-let responses = [];
-
-function safe(value) {
+function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, c =>
     ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-
-function log(title) {
-  events.unshift({time:new Date().toLocaleTimeString(),title});
+function clock() { return new Date().toLocaleTimeString(); }
+function randomIP() {
+  return "192.168." + (1 + Math.floor(Math.random()*4)) + "." + (2 + Math.floor(Math.random()*250));
+}
+function logEvent(title, detail) {
+  events.unshift({time:clock(),title,detail});
+  if(events.length>100) events.pop();
   renderEvents();
 }
+function rand(min,max) { return Math.floor(Math.random()*(max-min+1))+min; }
 
-document.querySelectorAll("nav button").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    button.classList.add("active");
-    document.getElementById(button.dataset.page).classList.add("active");
-  });
-});
+function generateTraffic() {
+  sequence++;
+  const suspicious = Math.random() < 0.27;
+  let item;
 
-function analyze() {
-  analyzed = true;
-  log("Traffic analysis completed using demonstration rules.");
-  document.getElementById("analysisStatus").textContent =
-    "Analysis completed at " + new Date().toLocaleTimeString() + ".";
+  if(suspicious) {
+    const threat = suspiciousTypes[rand(0,suspiciousTypes.length-1)];
+    item = {
+      id:sequence, time:clock(), ip:randomIP(), type:threat.type,
+      packets:rand(threat.packets[0],threat.packets[1]),
+      protocol:Math.random()<0.5?"TCP":"UDP",
+      threat:true,severity:threat.severity,response:"None"
+    };
+  } else {
+    item = {
+      id:sequence,time:clock(),ip:randomIP(),
+      type:normalTypes[rand(0,normalTypes.length-1)],
+      packets:rand(20,450),
+      protocol:["TCP","UDP","HTTP"][rand(0,2)],
+      threat:false,severity:"Low",response:"None"
+    };
+  }
+
+  traffic.unshift(item);
+  if(traffic.length>150) traffic.pop();
+
+  if(item.threat) {
+    logEvent("Threat detected: "+item.type,item.ip+" · "+item.severity+" severity");
+  } else if(sequence===1 || sequence%5===0) {
+    logEvent("Traffic record received",item.ip+" · "+item.protocol);
+  }
+  renderAll();
+}
+
+function startSimulation() {
+  if(running) return;
+  running=true;
+  document.getElementById("simStatus").innerHTML='<span class="dot live"></span>Simulation running';
+  document.getElementById("analysisStatus").textContent="Traffic is being generated automatically.";
+  logEvent("Simulation started","Synthetic network traffic generation enabled.");
+  generateTraffic();
+  timer=setInterval(generateTraffic,2500);
+}
+function stopSimulation() {
+  running=false;
+  clearInterval(timer);
+  timer=null;
+  document.getElementById("simStatus").innerHTML='<span class="dot"></span>Simulation paused';
+  logEvent("Simulation paused","No new traffic will be generated until resumed.");
+}
+function resetDemo() {
+  stopSimulation();
+  traffic.length=0;
+  events.length=0;
+  responses.length=0;
+  blockedIPs.clear();
+  sequence=0;
+  document.getElementById("search").value="";
+  document.getElementById("filter").value="all";
+  document.getElementById("responseMessage").textContent="";
+  document.getElementById("verification").innerHTML='<p class="muted">No response performed.</p>';
+  document.getElementById("analysisStatus").textContent="Start the simulation to generate traffic.";
   renderAll();
 }
 
 function renderTraffic() {
-  const query = (document.getElementById("search")?.value || "").toLowerCase();
-  const filter = document.getElementById("filter")?.value || "all";
-
-  const rows = traffic.filter(f =>
+  const query=(document.getElementById("search").value||"").toLowerCase();
+  const filter=document.getElementById("filter").value;
+  const rows=traffic.filter(f=>
     f.ip.toLowerCase().includes(query) &&
-    (filter === "all" || (filter === "threat" ? f.threat : !f.threat))
+    (filter==="all" || (filter==="threat"?f.threat:!f.threat))
   );
-
-  document.getElementById("trafficTable").innerHTML = rows.map(f => `
+  document.getElementById("trafficTable").innerHTML=rows.map(f=>`
     <tr>
-      <td>${f.ip}</td>
-      <td>${safe(f.type)}</td>
-      <td>${f.packets.toLocaleString()}</td>
-      <td>${f.protocol}</td>
-      <td>${!analyzed ? "Pending" : f.threat ? '<span class="red status">Suspicious</span>' : '<span class="green status">Normal</span>'}</td>
-      <td>${analyzed ? safe(f.severity) : "—"}</td>
+      <td>${f.time}</td><td>${f.ip}</td><td>${escapeHTML(f.type)}</td>
+      <td>${f.packets.toLocaleString()}</td><td>${f.protocol}</td>
+      <td>${f.threat?'<span class="status">Suspicious</span>':'Normal'}</td>
+      <td>${f.threat?f.severity:"Low"}</td>
     </tr>
-  `).join("") || '<tr><td colspan="6">No matching records.</td></tr>';
+  `).join("") || '<tr><td colspan="7">No traffic records yet.</td></tr>';
 }
 
 function renderThreats() {
-  const tbody = document.getElementById("threatTable");
-
-  if (!analyzed) {
-    tbody.innerHTML = '<tr><td colspan="4">Run traffic analysis first.</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = traffic.filter(f => f.threat).map(f => `
+  const rows=traffic.filter(f=>f.threat);
+  document.getElementById("threatTable").innerHTML=rows.map(f=>`
     <tr>
-      <td>${f.ip}</td>
-      <td>${safe(f.type)}</td>
-      <td>${safe(f.severity)}</td>
-      <td>${f.severity === "High" ? "Review immediately" : "Investigate connection"}</td>
+      <td>${f.time}</td><td>${f.ip}</td><td>${escapeHTML(f.type)}</td>
+      <td>${f.severity}</td><td>${escapeHTML(f.response)}</td>
     </tr>
-  `).join("");
+  `).join("") || '<tr><td colspan="5">No threats detected yet.</td></tr>';
 }
 
 function renderTarget() {
-  const select = document.getElementById("target");
-  const old = select.value;
-  const threats = analyzed ? traffic.filter(f => f.threat) : [];
-
-  select.innerHTML = threats.map(f =>
-    `<option value="${f.ip}">${f.ip} (${f.severity})</option>`
-  ).join("") || '<option value="">Run analysis first</option>';
-
-  if (threats.some(f => f.ip === old)) select.value = old;
+  const select=document.getElementById("target");
+  const old=select.value;
+  const threats=traffic.filter(f=>f.threat && !blockedIPs.has(f.ip));
+  select.innerHTML=threats.map(f=>
+    `<option value="${f.ip}">${f.ip} — ${escapeHTML(f.type)} (${f.severity})</option>`
+  ).join("") || '<option value="">No available suspicious IPs</option>';
+  if(threats.some(f=>f.ip===old)) select.value=old;
 }
 
 function respond() {
-  if (!analyzed) {
-    document.getElementById("responseMessage").textContent = "Please analyze traffic first.";
+  const ip=document.getElementById("target").value;
+  const flow=traffic.find(f=>f.ip===ip && f.threat);
+  if(!flow) {
+    document.getElementById("responseMessage").textContent="No suspicious source selected.";
     return;
   }
 
-  const ip = document.getElementById("target").value;
-  const flow = traffic.find(f => f.ip === ip && f.threat);
-  if (!flow) return;
+  const action=document.getElementById("responseType").value;
+  const time=clock();
 
-  const action = document.getElementById("responseType").value;
-  const time = new Date().toLocaleTimeString();
-
-  flow.response = action;
-  responses.unshift({ip,action,time});
-
-  document.getElementById("responseMessage").textContent = "Demo response recorded.";
-  document.getElementById("verification").innerHTML = `
-    <p><strong>Response recorded.</strong></p>
-    <p>Source: ${ip}</p>
-    <p>Action: ${safe(action)}</p>
-    <p class="muted">This confirms the demo action only, not a real network change.</p>
+  if(action==="Simulated block") blockedIPs.add(ip);
+  traffic.filter(f=>f.ip===ip).forEach(f=>f.response=action);
+  responses.unshift({time,ip,action,result:"Recorded"});
+  document.getElementById("responseMessage").textContent="Action recorded at "+time+".";
+  document.getElementById("verification").innerHTML=`
+    <p><strong>Verification complete</strong></p>
+    <p>Source IP: ${ip}</p>
+    <p>Action: ${escapeHTML(action)}</p>
+    <p>Result: Recorded in the simulation.</p>
+    <p class="muted">No real network connection was blocked or changed.</p>
   `;
-
-  log(action + " recorded for " + ip + ".");
+  logEvent("Response action: "+action,ip+" · Recorded in demo.");
   renderAll();
 }
 
 function renderEvents() {
-  document.getElementById("recentEvents").innerHTML = events.slice(0,5).map(e => `
-    <div class="event">
-      <div>${safe(e.title)}</div>
-      <div class="muted">${e.time}</div>
-    </div>
+  const html=events.slice(0,7).map(e=>`
+    <div class="event"><strong>${escapeHTML(e.title)}</strong>
+    <div class="muted">${e.time} · ${escapeHTML(e.detail)}</div></div>
+  `).join("") || '<p class="muted">No events recorded.</p>';
+  document.getElementById("recentEvents").innerHTML=html;
+  document.getElementById("allEvents").innerHTML=events.map(e=>`
+    <div class="event"><strong>${escapeHTML(e.title)}</strong>
+    <div class="muted">${e.time} · ${escapeHTML(e.detail)}</div></div>
   `).join("") || '<p class="muted">No events recorded.</p>';
 }
 
 function renderResponses() {
-  document.getElementById("responseTable").innerHTML = responses.map(r => `
-    <tr>
-      <td>${r.time}</td>
-      <td>${r.ip}</td>
-      <td>${safe(r.action)}</td>
-      <td>Recorded</td>
-    </tr>
+  document.getElementById("responseTable").innerHTML=responses.map(r=>`
+    <tr><td>${r.time}</td><td>${r.ip}</td><td>${escapeHTML(r.action)}</td><td>${r.result}</td></tr>
   `).join("") || '<tr><td colspan="4">No responses recorded.</td></tr>';
 }
 
 function renderDashboard() {
-  const total = traffic.length;
-  const threats = traffic.filter(f => f.threat).length;
-  const high = traffic.filter(f => f.threat && f.severity === "High").length;
-  const normal = total - threats;
+  const total=traffic.length;
+  const threats=traffic.filter(f=>f.threat).length;
+  const high=traffic.filter(f=>f.threat&&f.severity==="High").length;
+  const normal=total-threats;
 
-  document.getElementById("total").textContent = total;
-  document.getElementById("threatCount").textContent = analyzed ? threats : "—";
-  document.getElementById("highCount").textContent = analyzed ? high : "—";
-  document.getElementById("actionsCount").textContent = responses.length;
-
-  document.getElementById("normalPct").textContent =
-    analyzed ? Math.round(normal / total * 100) + "%" : "—";
-  document.getElementById("threatPct").textContent =
-    analyzed ? Math.round(threats / total * 100) + "%" : "—";
-
-  document.getElementById("normalBar").style.width =
-    analyzed ? normal / total * 100 + "%" : "0%";
-  document.getElementById("threatBar").style.width =
-    analyzed ? threats / total * 100 + "%" : "0%";
+  document.getElementById("total").textContent=total;
+  document.getElementById("threatCount").textContent=threats;
+  document.getElementById("highCount").textContent=high;
+  document.getElementById("actionsCount").textContent=responses.length;
+  document.getElementById("normalPct").textContent=total?Math.round(normal/total*100)+"%":"0%";
+  document.getElementById("threatPct").textContent=total?Math.round(threats/total*100)+"%":"0%";
+  document.getElementById("normalBar").style.width=total?normal/total*100+"%":"0%";
+  document.getElementById("threatBar").style.width=total?threats/total*100+"%":"0%";
 }
 
 function renderAll() {
@@ -504,23 +383,16 @@ function renderAll() {
   renderEvents();
 }
 
-function resetDemo() {
-  traffic = original.map(f => ({...f,response:""}));
-  analyzed = false;
-  events = [];
-  responses = [];
+document.querySelectorAll("nav button").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    button.classList.add("active");
+    document.getElementById(button.dataset.page).classList.add("active");
+  });
+});
 
-  document.getElementById("search").value = "";
-  document.getElementById("filter").value = "all";
-  document.getElementById("analysisStatus").textContent = "Analysis has not been run.";
-  document.getElementById("responseMessage").textContent = "";
-  document.getElementById("verification").innerHTML =
-    '<p class="muted">No response performed.</p>';
-
-  renderAll();
-}
-
-resetDemo();
+renderAll();
 </script>
 </body>
 </html>
