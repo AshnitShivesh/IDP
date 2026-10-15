@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5G Network Threat Detection</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  color: #202b3c;
+}
+header {
+  background: #14283f;
+  color: white;
+  padding: 22px 7%;
+}
+header h1 { margin: 0 0 8px; font-size: 24px; }
+header p { margin: 0; color: #c5d4e5; font-size: 14px; }
+main { max-width: 1100px; margin: 28px auto; padding: 0 20px; }
+.section-title { margin: 26px 0 14px; font-size: 19px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 9px;
+  border: 1px solid #e0e6ed;
+  box-shadow: 0 2px 6px #14283f0a;
+}
+.metric { font-size: 28px; font-weight: bold; margin: 10px 0; }
+.muted { color: #718096; font-size: 13px; }
+.green { color: #16845b; }
+.red { color: #d33b42; }
+.orange { color: #c47713; }
+button, select {
+  padding: 10px 14px;
+  border-radius: 5px;
+  border: 1px solid #ccd5df;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+button.primary { background: #1769aa; color: white; border: 0; }
+button.danger { background: #c53b43; color: white; border: 0; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 13px 10px; border-bottom: 1px solid #e8edf2; }
+th { color: #65758a; font-weight: 600; }
+.table-wrap { overflow-x: auto; }
+.pill { padding: 5px 8px; border-radius: 12px; font-size: 12px; background: #e8f7ee; color: #167349; }
+.pill.bad { background: #fdebec; color: #b52d36; }
+.pill.warn { background: #fff2d8; color: #99600a; }
+.notice { background: #fff8e8; border-left: 4px solid #e6a33c; padding: 12px 15px; font-size: 13px; line-height: 1.5; }
+#message { margin-top: 12px; font-size: 14px; }
+footer { text-align: center; padding: 24px; color: #718096; font-size: 12px; }
+@media(max-width:600px) {
+  header { padding: 20px; }
+  header h1 { font-size: 21px; }
+  main { padding: 0 12px; }
+  .card { padding: 15px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>5G Network Security Monitor</h1>
+  <p>Threat Detection and Automated Security Response System</p>
+</header>
+
+<main>
+  <div class="notice">
+    <strong>Prototype mode:</strong> This dashboard uses demonstration data.
+    Detection and response actions are simulated; no live network is monitored or blocked.
+  </div>
+
+  <h2 class="section-title">Network Overview</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="muted">Traffic Records</div>
+      <div class="metric" id="total">6</div>
+      <div class="muted">Sample flows analyzed</div>
+    </div>
+    <div class="card">
+      <div class="muted">Threats Detected</div>
+      <div class="metric red" id="threatCount">3</div>
+      <div class="muted">Flagged sample flows</div>
+    </div>
+    <div class="card">
+      <div class="muted">High Severity</div>
+      <div class="metric orange" id="highCount">2</div>
+      <div class="muted">Requires attention</div>
+    </div>
+    <div class="card">
+      <div class="muted">Responses Simulated</div>
+      <div class="metric green" id="responseCount">0</div>
+      <div class="muted">Actions in this session</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Traffic Analysis</h2>
+  <div class="card">
+    <div class="actions">
+      <button class="primary" onclick="analyzeTraffic()">Analyze Traffic</button>
+      <button onclick="resetDemo()">Reset Demo</button>
+      <select id="filter" onchange="renderTable()">
+        <option value="all">All traffic</option>
+        <option value="threat">Suspicious only</option>
+        <option value="normal">Normal only</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Source IP</th><th>Traffic Type</th><th>Packets</th><th>Detection</th><th>Severity</th><th>Response</th></tr>
+        </thead>
+        <tbody id="trafficRows"></tbody>
+      </table>
+    </div>
+    <div id="message" class="muted">Demo is ready. Select Analyze Traffic to run the demonstration.</div>
+  </div>
+
+  <h2 class="section-title">Security Response</h2>
+  <div class="card">
+    <p class="muted">Choose a detected suspicious flow to simulate a security action.</p>
+    <div class="actions">
+      <select id="target"></select>
+      <button class="danger" onclick="simulateResponse()">Simulate Block</button>
+      <button onclick="simulateFlag()">Flag for Review</button>
+    </div>
+    <div id="responseMessage" class="muted">No response action performed yet.</div>
+  </div>
+
+  <h2 class="section-title">System Workflow</h2>
+  <div class="grid">
+    <div class="card"><strong>01 · Monitoring</strong><p class="muted">Collect sample traffic records.</p></div>
+    <div class="card"><strong>02 · Detection</strong><p class="muted">Identify suspicious traffic patterns.</p></div>
+    <div class="card"><strong>03 · Assessment</strong><p class="muted">Assign severity to detected threats.</p></div>
+    <div class="card"><strong>04 · Response</strong><p class="muted">Simulate blocking or flagging.</p></div>
+    <div class="card"><strong>05 · Verification</strong><p class="muted">Display the result of the simulated action.</p></div>
+  </div>
+</main>
+
+<footer>Academic project prototype · Demonstration data only</footer>
+
+<script>
+const initialTraffic = [
+  {ip:"192.168.1.10", type:"Normal data", packets:120, threat:false, severity:"Low"},
+  {ip:"192.168.1.24", type:"Port scan pattern", packets:950, threat:true, severity:"High"},
+  {ip:"192.168.1.35", type:"Normal data", packets:85, threat:false, severity:"Low"},
+  {ip:"192.168.1.48", type:"Flood-like pattern", packets:4800, threat:true, severity:"High"},
+  {ip:"192.168.1.62", type:"Unusual connection", packets:620, threat:true, severity:"Medium"},
+  {ip:"192.168.1.77", type:"Normal data", packets:160, threat:false, severity:"Low"}
+];
+
+let traffic = [];
+let analyzed = false;
+let responseCount = 0;
+
+function resetDemo() {
+  traffic = initialTraffic.map(item => ({...item, response:"None"}));
+  analyzed = false;
+  responseCount = 0;
+  document.getElementById("filter").value = "all";
+  document.getElementById("message").textContent =
+    "Demo reset. Select Analyze Traffic to begin.";
+  document.getElementById("responseMessage").textContent =
+    "No response action performed yet.";
+  render();
+}
+
+function analyzeTraffic() {
+  analyzed = true;
+  document.getElementById("message").textContent =
+    "Analysis complete. Suspicious patterns were identified in the sample data using demonstration rules, not a trained ML model.";
+  render();
+}
+
+function renderTable() {
+  const tbody = document.getElementById("trafficRows");
+  const filter = document.getElementById("filter").value;
+  const rows = traffic.filter(item => {
+    if (filter === "threat") return item.threat;
+    if (filter === "normal") return !item.threat;
+    return true;
+  });
+
+  tbody.innerHTML = rows.map(item => {
+    const detection = analyzed
+      ? item.threat ? '<span class="pill bad">Suspicious</span>'
+                    : '<span class="pill">Normal</span>'
+      : '<span class="pill warn">Not analyzed</span>';
+    const severity = analyzed
+      ? item.severity === "High" ? '<span class="red">High</span>'
+        : item.severity === "Medium" ? '<span class="orange">Medium</span>'
+        : "Low"
+      : "—";
+    return `<tr>
+      <td>${item.ip}</td>
+      <td>${item.type}</td>
+      <td>${item.packets.toLocaleString()}</td>
+      <td>${detection}</td>
+      <td>${severity}</td>
+      <td>${item.response}</td>
+    </tr>`;
+  }).join("");
+
+  const target = document.getElementById("target");
+  const previous = target.value;
+  const suspicious = traffic.filter(item => item.threat);
+  target.innerHTML = suspicious.map(item =>
+    `<option value="${item.ip}">${item.ip} — ${item.severity}</option>`
+  ).join("");
+  if (suspicious.some(item => item.ip === previous)) target.value = previous;
+  if (!suspicious.length) target.innerHTML = '<option value="">No suspicious flows</option>';
+}
+
+function render() {
+  document.getElementById("total").textContent = traffic.length;
+  document.getElementById("threatCount").textContent =
+    analyzed ? traffic.filter(item => item.threat).length : "—";
+  document.getElementById("highCount").textContent =
+    analyzed ? traffic.filter(item => item.threat && item.severity === "High").length : "—";
+  document.getElementById("responseCount").textContent = responseCount;
+  renderTable();
+}
+
+function selectedThreat() {
+  if (!analyzed) {
+    document.getElementById("responseMessage").textContent =
+      "Please analyze the traffic before taking a simulated response.";
+    return null;
+  }
+  const item = traffic.find(row => row.ip === document.getElementById("target").value);
+  if (!item || !item.threat) {
+    document.getElementById("responseMessage").textContent =
+      "Select a suspicious flow first.";
+    return null;
+  }
+  return item;
+}
+
+function simulateResponse() {
+  const item = selectedThreat();
+  if (!item) return;
+  if (item.response === "Simulated block") {
+    document.getElementById("responseMessage").textContent =
+      "This flow has already been marked as blocked in the demo.";
+    return;
+  }
+  item.response = "Simulated block";
+  responseCount++;
+  document.getElementById("responseMessage").innerHTML =
+    `<span class="green">Verification: simulated block recorded for ${item.ip}.</span> No real network traffic was blocked.`;
+  render();
+}
+
+function simulateFlag() {
+  const item = selectedThreat();
+  if (!item) return;
+  if (item.response !== "Flagged for review") responseCount++;
+  item.response = "Flagged for review";
+  document.getElementById("responseMessage").textContent =
+    "Verification: " + item.ip + " has been flagged in the demo for administrator review.";
+  render();
+}
+
+resetDemo();
+</script>
+</body>
+</html>
